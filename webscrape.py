@@ -4,7 +4,7 @@ from urllib.request import urlopen
 def scrape_latest_news(stock_code):
     page_url = f"https://www.bnnbloomberg.ca/stock/{stock_code}#/News"
     
-    #----------capture news section----------#
+    #----------capture latest news post----------#
     page = urlopen(page_url)
     soup = BeautifulSoup(page, 'html.parser')
     news = soup.find("li", {"class": "0 feed-item index-1"})
@@ -23,5 +23,5 @@ def scrape_latest_news(stock_code):
 
     return date, title, url, category
 
-print(scrape_latest_news('AC:CT'))
+print(scrape_latest_news('ESI:CT'))
 
