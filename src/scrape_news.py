@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
 from store_news import replace_news_csv
+from email_news import send_news_notification
 import csv
 import os
 import pandas as pd
@@ -50,7 +51,10 @@ def main():
         #----------check if news has changed----------#
         if not compare_tuple(latest_news_tuple,previous_news_tuple):
             print(f"stock: {stock} news has been released!")
-            #TBD email
+            
+            #----------send email of news update----------#
+            send_news_notification(latest_news_tuple)
+
             #----------replace dataframe with updated news----------#
             df.loc[index]=latest_news_tuple
             update_count+=1
