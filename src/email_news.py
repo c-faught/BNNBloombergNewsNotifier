@@ -1,9 +1,6 @@
 import yagmail
 import keyring
 
-#keyring.set_password('yagmail', 'BNNBloombergNotifier', 'tr0llface')
-
-
-yag = yagmail.SMTP('BNNBloombergNotifier', 'test')
+yag = yagmail.SMTP('BNNBloombergNotifier')
 contents = ["this is another","test"]
-yag.send('faught.colin@gmail.com', 'test', contents)
+yag.send('jimmy123@zippymail.info', 'test', contents)
