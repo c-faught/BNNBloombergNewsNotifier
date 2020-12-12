@@ -1,10 +1,12 @@
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
+from store_news import replace_news_csv
 import csv
 import os
 import pandas as pd
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+NEWS_FILE = 'news.csv'
 
 def scrape_latest_news(stock_code):
     page_url = f"https://www.bnnbloomberg.ca/stock/{stock_code}#/News"
@@ -32,9 +34,12 @@ def compare_tuple(t1,t2):
     return t1 == t2
 
 def main():
-    #load news file in csv
-    df = pd.read_csv(f"{ROOT_DIR}/user/news.csv",sep='\|', engine='python')
-    #iterate each row
+    update_count = 0
+
+    #load news file from csv
+    df = pd.read_csv(f"{ROOT_DIR}/{NEWS_FILE}",sep='\|', engine='python')
+
+    #iterate through df rows
     for index, row in df.iterrows():
         #----------scrape BNNBloomberg stock for latest news----------#
         stock = row['Stock']
@@ -44,7 +49,17 @@ def main():
         
         #----------check if news has changed----------#
         if not compare_tuple(latest_news_tuple,previous_news_tuple):
+            print(f"stock: {stock} news has been released!")
             #TBD email
-            #----------update news table data----------#
+            #----------replace dataframe with updated news----------#
             df.loc[index]=latest_news_tuple
+            update_count+=1
+
+    #if a change in latest news occured
+    if update_count>=1:        
+        #----------replace news csv----------#
+        replace_news_csv(df)
+    else:
+        print("no stock news has been released")
+
 main()
