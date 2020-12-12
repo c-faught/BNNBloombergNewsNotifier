@@ -2,7 +2,6 @@ from bs4 import BeautifulSoup
 from urllib.request import urlopen
 from store_news import replace_news_csv
 from email_news import send_news_notification
-import csv
 import os
 import pandas as pd
 
@@ -31,14 +30,14 @@ def scrape_latest_news(stock_code):
 
     return date, title, url, category
 
-def compare_tuple(t1,t2):
-    return t1 == t2
+def compare_url(t1,t2):
+    return t1[3] == t2[3]
 
 def main():
     update_count = 0
 
     #load news file from csv
-    df = pd.read_csv(f"{ROOT_DIR}/{NEWS_FILE}",sep='\|', engine='python')
+    df = pd.read_csv(f"{ROOT_DIR}/{NEWS_FILE}",sep='\|', engine='python', encoding='utf-8')
 
     #iterate through df rows
     for index, row in df.iterrows():
@@ -49,7 +48,7 @@ def main():
         previous_news_tuple = tuple(row)
         
         #----------check if news has changed----------#
-        if not compare_tuple(latest_news_tuple,previous_news_tuple):
+        if not compare_url(latest_news_tuple,previous_news_tuple):
             print(f"stock: {stock} news has been released!")
             
             #----------send email of news update----------#
