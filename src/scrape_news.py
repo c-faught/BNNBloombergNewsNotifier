@@ -1,5 +1,10 @@
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
+import csv
+import os
+import pandas as pd
+
+ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 def scrape_latest_news(stock_code):
     page_url = f"https://www.bnnbloomberg.ca/stock/{stock_code}#/News"
@@ -23,5 +28,23 @@ def scrape_latest_news(stock_code):
 
     return date, title, url, category
 
-print(scrape_latest_news('ESI:CT'))
+def compare_tuple(t1,t2):
+    return t1 == t2
 
+def main():
+    #load news file in csv
+    df = pd.read_csv(f"{ROOT_DIR}/user/news.csv",sep='\|', engine='python')
+    #iterate each row
+    for index, row in df.iterrows():
+        #----------scrape BNNBloomberg stock for latest news----------#
+        stock = row['Stock']
+        latest_news_tuple = scrape_latest_news(stock)
+        latest_news_tuple = (stock,) + latest_news_tuple #add stock to tuple
+        previous_news_tuple = tuple(row)
+        
+        #----------check if news has changed----------#
+        if not compare_tuple(latest_news_tuple,previous_news_tuple):
+            #TBD email
+            #----------update news table data----------#
+            df.loc[index]=latest_news_tuple
+main()
