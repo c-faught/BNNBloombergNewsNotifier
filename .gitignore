@@ -1,3 +1,7 @@
 #virtual env
 project_env/
+__pycache__/
+#contains passwords
 config/
+
+
