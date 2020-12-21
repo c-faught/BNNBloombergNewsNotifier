@@ -65,4 +65,5 @@ def main():
     else:
         print("no stock news has been released")
 
-main()
+if __name__ == "__main__":
+    main()
