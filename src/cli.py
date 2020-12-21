@@ -1,6 +1,6 @@
 import click
 import store_news
-import capture_news
+import scrape_news
 
 @click.command()
 
@@ -17,9 +17,9 @@ def remove_stock(remove):
     store_news.remove_stock_to_news(remove)
 
 @click.command('--refresh', help='Enter the stock symbol to remove from news updates.')
-def refresh()
+def refresh():
     print('refreshing news list')
-    capture_news.main()
+    scrape_news.main()
 
 @click.option
 
