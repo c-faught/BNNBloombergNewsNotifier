@@ -8,7 +8,7 @@ def replace_news_csv(dataframe):
     dataframe.to_csv(f"{ROOT_DIR}/{NEWS_FILE}", index=False,sep='|')
     return True
 
-def add_stock_csv(stock):
+def add_stock_to_news(stock):
     #load news file from csv
     df = pd.read_csv(f"{ROOT_DIR}/{NEWS_FILE}",sep='\|', engine='python')
     df = df.append({'Stock': stock}, ignore_index=True)
