@@ -16,16 +16,7 @@ def remove_stock(remove):
     print(f'removing: {remove}')
     store_news.remove_stock_to_news(remove)
 
-@click.command('--refresh', help='Enter the stock symbol to remove from news updates.')
-def refresh():
-    print('refreshing news list')
-    scrape_news.main()
-
-@click.option
-
 if __name__ == '__main__':
     remove_stock()
-
-
 
 #python cli.py --stock=ESI:CT
